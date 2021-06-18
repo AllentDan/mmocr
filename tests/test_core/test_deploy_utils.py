@@ -1,6 +1,7 @@
 from functools import partial
 
 import mmcv
+import mmcv.tensorrt
 import numpy as np
 import pytest
 import torch
@@ -17,10 +18,10 @@ from mmocr.core.deployment import (ONNXRuntimeDetector, ONNXRuntimeRecognizer,
     reason='skip if torch=1.3.x')
 @pytest.mark.skipif(
     not torch.cuda.is_available(), reason='skip if on cpu device')
-@pytest.mark.importorskip('onnxruntime')
-@pytest.mark.importorskip('tensorrt')
-@pytest.mark.importorskip('mmcv.tensorrt')
 def test_detector_wraper():
+    pytest.importorskip('onnxruntime')
+    pytest.importorskip('tensorrt')
+    pytest.importorskip('mmcv.tensorrt')
     import onnxruntime as ort  # noqa: F401
     import tensorrt as trt
     from mmcv.tensorrt import (onnx2trt, save_trt_engine)
@@ -121,10 +122,10 @@ def test_detector_wraper():
     reason='skip if torch=1.3.x')
 @pytest.mark.skipif(
     not torch.cuda.is_available(), reason='skip if on cpu device')
-@pytest.mark.importorskip('onnxruntime')
-@pytest.mark.importorskip('tensorrt')
-@pytest.mark.importorskip('mmcv.tensorrt')
 def test_recognizer_wraper():
+    pytest.importorskip('onnxruntime')
+    pytest.importorskip('tensorrt')
+    pytest.importorskip('mmcv.tensorrt')
     import onnxruntime as ort  # noqa: F401
     import tensorrt as trt
     from mmcv.tensorrt import (onnx2trt, save_trt_engine)
