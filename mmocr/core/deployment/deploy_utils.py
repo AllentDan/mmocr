@@ -119,12 +119,12 @@ class ONNXRuntimeRecognizer(EncodeDecodeRecognizer):
                  cfg: Any,
                  device_id: int,
                  show_score: bool = False):
-        EncodeDecodeRecognizer.__init__(self, cfg.model.preprocessor,
+        EncodeDecodeRecognizer.__init__(self, None,
                                         cfg.model.backbone, cfg.model.encoder,
                                         cfg.model.decoder, cfg.model.loss,
                                         cfg.model.label_convertor,
-                                        cfg.train_cfg, cfg.test_cfg, 40,
-                                        cfg.model.pretrained)
+                                        None, None, 40,
+                                        None)
         import onnxruntime as ort
         # get the custom op path
         ort_custom_op_path = ''

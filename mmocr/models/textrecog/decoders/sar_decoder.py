@@ -125,7 +125,8 @@ class ParallelSARDecoder(BaseDecoder):
             attn_mask = torch.zeros_like(attn_weight)
             for i, valid_ratio in enumerate(valid_ratios):
                 valid_width = min(w, math.ceil(w * valid_ratio))
-                attn_mask[i, :, :, valid_width:, :] = 1
+                if valid_width < attn_mask.shape[3]:
+                    attn_mask[i, :, :, valid_width:, :] = 1
             attn_weight = attn_weight.masked_fill(attn_mask.bool(),
                                                   float('-inf'))
 
