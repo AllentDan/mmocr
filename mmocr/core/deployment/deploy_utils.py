@@ -120,12 +120,11 @@ class ONNXRuntimeRecognizer(EncodeDecodeRecognizer):
                  cfg: Any,
                  device_id: int,
                  show_score: bool = False):
-        EncodeDecodeRecognizer.__init__(self, cfg.model.preprocessor,
-                                        cfg.model.backbone, cfg.model.encoder,
-                                        cfg.model.decoder, cfg.model.loss,
-                                        cfg.model.label_convertor,
-                                        cfg.train_cfg, cfg.test_cfg, 40,
-                                        cfg.model.pretrained)
+        EncodeDecodeRecognizer.__init__(self, None, cfg.model.backbone,
+                                        cfg.model.encoder, cfg.model.decoder,
+                                        cfg.model.loss,
+                                        cfg.model.label_convertor, None, None,
+                                        40, None)
         import onnxruntime as ort
         # get the custom op path
         ort_custom_op_path = ''
@@ -165,6 +164,19 @@ class ONNXRuntimeRecognizer(EncodeDecodeRecognizer):
 
     def extract_feat(self, imgs):
         raise NotImplementedError('This method is not implemented.')
+
+    def forward_test(self, imgs, img_metas, **kwargs):
+        """
+        Args:
+            imgs (tensor | list[tensor]): Tensor should have shape NxCxHxW,
+                which contains all images in the batch.
+            img_metas (list[dict] | list[list[dict]]):
+                The outer list indicates images in a batch.
+        """
+        if isinstance(imgs, list):
+            imgs = imgs[0]
+
+        return self.simple_test(imgs, img_metas, **kwargs)
 
     def simple_test(self,
                     img: torch.Tensor,

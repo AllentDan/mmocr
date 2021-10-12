@@ -78,7 +78,7 @@ class SAREncoder(BaseEncoder):
                 img_meta.get('valid_ratio', 1.0) for img_meta in img_metas
             ] if self.mask else None
 
-        h_feat = feat.size(2)
+        h_feat = int(feat.size(2))
         feat_v = F.max_pool2d(
             feat, kernel_size=(h_feat, 1), stride=1, padding=0)
         feat_v = feat_v.squeeze(2)  # bsz * C * W

@@ -177,7 +177,7 @@ def pytorch2onnx(model: nn.Module,
 
     img_list = [img[None, :].to(device) for img in imgs]
     # update img_meta
-    img_list, img_metas = _update_input_img(img_list, img_metas)
+    # img_list, img_metas = _update_input_img(img_list, img_metas)
 
     origin_forward = model.forward
     if (model_type == 'det'):
@@ -211,10 +211,12 @@ def pytorch2onnx(model: nn.Module,
         dynamic_axes = {
             'input': {
                 0: 'batch',
+                2: 'height',
                 3: 'width'
             },
             'output': {
                 0: 'batch',
+                2: 'height',
                 3: 'width'
             }
         }
@@ -236,16 +238,16 @@ def pytorch2onnx(model: nn.Module,
         onnx_model = onnx.load(output_file)
         onnx.checker.check_model(onnx_model)
 
-        scale_factor = (0.5, 0.5) if model_type == 'det' else (1, 0.5)
-        if dynamic_export:
-            # scale image for dynamic shape test
-            img_list = [
-                nn.functional.interpolate(_, scale_factor=scale_factor)
-                for _ in img_list
-            ]
+        # scale_factor = (0.5, 0.5) if model_type == 'det' else (1, 0.5)
+        # if dynamic_export:
+        #     # scale image for dynamic shape test
+        #     img_list = [
+        #         nn.functional.interpolate(_, scale_factor=scale_factor)
+        #         for _ in img_list
+        #     ]
 
-            # update img_meta
-            img_list, img_metas = _update_input_img(img_list, img_metas)
+        # update img_meta
+        # img_list, img_metas = _update_input_img(img_list, img_metas)
 
         # check the numerical value
         # get pytorch output
