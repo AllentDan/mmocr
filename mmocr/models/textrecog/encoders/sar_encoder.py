@@ -90,8 +90,11 @@ class SAREncoder(BaseEncoder):
             valid_hf = []
             T = holistic_feat.size(1)
             for i, valid_ratio in enumerate(valid_ratios):
-                valid_step = min(T, math.ceil(T * valid_ratio)) - 1
-                valid_hf.append(holistic_feat[i, valid_step, :])
+                valid_ratio = feat[0][0][0][0] + torch.tensor(0.5).cuda()
+                valid_ratio = torch.clamp(valid_ratio, 0.3, 1)
+                # valid_ratio_less1 = int(int(valid_ratio) < 1)
+                valid_step = torch.ceil(T * valid_ratio) - 1
+                valid_hf.append(holistic_feat[i, valid_step.long(), :])
             valid_hf = torch.stack(valid_hf, dim=0)
         else:
             valid_hf = holistic_feat[:, -1, :]  # bsz * C

@@ -124,11 +124,16 @@ class ParallelSARDecoder(BaseDecoder):
 
         if valid_ratios is not None:
             # cal mask of attention weight
-            attn_mask = torch.zeros_like(attn_weight)
+            # attn_mask = torch.zeros_like(attn_weight)
+            attn_mask = torch.zeros(bsz, T, h, w + 1, c).to(attn_weight.device)
             for i, valid_ratio in enumerate(valid_ratios):
-                valid_width = min(w, math.ceil(w * valid_ratio))
-                if valid_width < attn_mask.shape[3]:
-                    attn_mask[i, :, :, valid_width:, :] = 1
+                # valid_ratio = feat[0][0][0][0].cuda()
+                valid_ratio = feat[0][0][0][0] + torch.tensor(0.5).cuda()
+                valid_ratio = torch.clamp(valid_ratio, 0.3, 1)
+                valid_width = torch.ceil(w * valid_ratio).long()
+                attn_mask[i].narrow(2, valid_width, w + 1 - valid_width)[:] = 1
+                # attn_mask[i, :, :, valid_width, :] = 1
+            attn_mask = attn_mask[:, :, :, :w, :]
             attn_weight = attn_weight.masked_fill(attn_mask.bool(),
                                                   float('-inf'))
 

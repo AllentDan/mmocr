@@ -95,18 +95,18 @@ train1 = dict(
 test_prefix = 'data/mixture/'
 
 test_img_prefix1 = test_prefix + 'IIIT5K/'
-test_img_prefix2 = test_prefix + 'svt/'
-test_img_prefix3 = test_prefix + 'icdar_2013/'
-test_img_prefix4 = test_prefix + 'icdar_2015/'
-test_img_prefix5 = test_prefix + 'svtp/'
-test_img_prefix6 = test_prefix + 'ct80/'
+# test_img_prefix2 = test_prefix + 'svt/'
+# test_img_prefix3 = test_prefix + 'icdar_2013/'
+# test_img_prefix4 = test_prefix + 'icdar_2015/'
+# test_img_prefix5 = test_prefix + 'svtp/'
+# test_img_prefix6 = test_prefix + 'ct80/'
 
 test_ann_file1 = test_prefix + 'IIIT5K/test_label.txt'
-test_ann_file2 = test_prefix + 'svt/test_label.txt'
-test_ann_file3 = test_prefix + 'icdar_2013/test_label_1015.txt'
-test_ann_file4 = test_prefix + 'icdar_2015/test_label.txt'
-test_ann_file5 = test_prefix + 'svtp/test_label.txt'
-test_ann_file6 = test_prefix + 'ct80/test_label.txt'
+# test_ann_file2 = test_prefix + 'svt/test_label.txt'
+# test_ann_file3 = test_prefix + 'icdar_2013/test_label_1015.txt'
+# test_ann_file4 = test_prefix + 'icdar_2015/test_label.txt'
+# test_ann_file5 = test_prefix + 'svtp/test_label.txt'
+# test_ann_file6 = test_prefix + 'ct80/test_label.txt'
 
 test1 = dict(
     type=dataset_type,
@@ -123,25 +123,25 @@ test1 = dict(
     pipeline=None,
     test_mode=True)
 
-test2 = {key: value for key, value in test1.items()}
-test2['img_prefix'] = test_img_prefix2
-test2['ann_file'] = test_ann_file2
+# test2 = {key: value for key, value in test1.items()}
+# test2['img_prefix'] = test_img_prefix2
+# test2['ann_file'] = test_ann_file2
 
-test3 = {key: value for key, value in test1.items()}
-test3['img_prefix'] = test_img_prefix3
-test3['ann_file'] = test_ann_file3
+# test3 = {key: value for key, value in test1.items()}
+# test3['img_prefix'] = test_img_prefix3
+# test3['ann_file'] = test_ann_file3
 
-test4 = {key: value for key, value in test1.items()}
-test4['img_prefix'] = test_img_prefix4
-test4['ann_file'] = test_ann_file4
+# test4 = {key: value for key, value in test1.items()}
+# test4['img_prefix'] = test_img_prefix4
+# test4['ann_file'] = test_ann_file4
 
-test5 = {key: value for key, value in test1.items()}
-test5['img_prefix'] = test_img_prefix5
-test5['ann_file'] = test_ann_file5
+# test5 = {key: value for key, value in test1.items()}
+# test5['img_prefix'] = test_img_prefix5
+# test5['ann_file'] = test_ann_file5
 
-test6 = {key: value for key, value in test1.items()}
-test6['img_prefix'] = test_img_prefix6
-test6['ann_file'] = test_ann_file6
+# test6 = {key: value for key, value in test1.items()}
+# test6['img_prefix'] = test_img_prefix6
+# test6['ann_file'] = test_ann_file6
 
 data = dict(
     samples_per_gpu=64,
@@ -153,13 +153,9 @@ data = dict(
         datasets=[train1],
         pipeline=train_pipeline),
     val=dict(
-        type='UniformConcatDataset',
-        datasets=[test1, test2, test3, test4, test5, test6],
-        pipeline=test_pipeline),
+        type='UniformConcatDataset', datasets=[test1], pipeline=test_pipeline),
     test=dict(
-        type='UniformConcatDataset',
-        datasets=[test1, test2, test3, test4, test5, test6],
-        pipeline=test_pipeline))
+        type='UniformConcatDataset', datasets=[test1], pipeline=test_pipeline))
 
 evaluation = dict(interval=1, metric='acc')
 
